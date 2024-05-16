@@ -34,9 +34,9 @@ public class MedicoController {
         }
         catch(Exception e){
             return ResponseEntity.internalServerError().body("El medico ya existe");
-            //ERROR EN EL CÓDIGO 1: NUNCA VA A ENTRAR EN EL CATCH PORQUE EL MEDICO YA EXISTA
-            // ,DADO QUE  AL HACER SAVE AND FLUSH SE ACTUALIZA EL MEDICO SI YA EXISTE, Y SI NO, SE CREA UNO NUEVO.
-            // SOLO SE ENTRARÁ EN EL CATCH SI HAY UN ERROR EN CÓMO ESTÁ DEFINIDO EL MEDICO.
+            //    ERROR EN EL CÓDIGO 1: NUNCA VA A ENTRAR EN EL CATCH POR QUE EL MEDICO YA EXISTA, DADO QUE MEDICOSERVICE,
+            //    AL LLAMAR A ADDMEDICO HACE SAVE AND FLUSH
+            //    LO QUE ACTUALIZA EL MEDICO SI YA EXISTE, Y SI NO, CREA UNO NUEVO.
         }
 	}
 

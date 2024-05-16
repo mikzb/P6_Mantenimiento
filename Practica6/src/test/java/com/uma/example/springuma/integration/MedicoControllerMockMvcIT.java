@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -97,7 +95,9 @@ public class MedicoControllerMockMvcIT extends AbstractIntegration {
 //                .andDo(print())
 //                .andExpect(status().isInternalServerError())
 //                .andExpect(content().string(containsString("El medico ya existe")));
-//    } ERROR EN EL CÓDIGO 1: NUNCA VA A ENTRAR EN EL CATCH, YA QUE RepositoryMedico AL HACER SAVE AND FLUSH ACTUALIZA EL MEDICO SI YA EXISTE, Y SI NO, CREA UNO NUEVO.
+//    } ERROR EN EL CÓDIGO 1: NUNCA VA A ENTRAR EN EL CATCH POR QUE EL MEDICO YA EXISTA, DADO QUE MEDICOSERVICE,
+//    AL LLAMAR A ADDMEDICO HACE SAVE AND FLUSH
+//    LO QUE ACTUALIZA EL MEDICO SI YA EXISTE, Y SI NO, CREA UNO NUEVO.
 
     @Test
     @DisplayName("Update a medico that exists")
