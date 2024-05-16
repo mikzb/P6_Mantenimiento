@@ -42,8 +42,8 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
     private Medico medico;
     private Paciente paciente;
 
-    private static File healthyImage= new File("src/test/resources/healthy.png");
-    private static File notHealthyImage= new File("src/test/resources/no_healthty.png");
+    private static final File healthyImage= new File("src/test/resources/healthy.png");
+    private static final File notHealthyImage= new File("src/test/resources/no_healthty.png");
 
     @PostConstruct
     public void init() throws Exception {
@@ -88,8 +88,8 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
 
     @ParameterizedTest
     @MethodSource("provideImagesForTesting")
-    @DisplayName("Subir y obtener la misma imagen")
-    public void submitValidImage_Success(File imageFile) throws Exception {
+    @DisplayName("Upload an image and get the correct response")
+    public void uploadImage_WithValidData_ReturnsSuccess(File imageFile) throws Exception {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("paciente", paciente);
@@ -108,7 +108,7 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
         assertEquals("{\"response\" : \"file uploaded successfully : healthy.png\"}", result);
 
         // Confirmamos que un GET lo hace bien
-        webTestClient.get().uri("/imagen/info/1")
+        webTestClient.get().uri("/imagen/info/{id}", imagen.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange() // hace la peticion
                 .expectStatus().isOk()
@@ -117,8 +117,8 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("Subir imagen sana y obtener clasificacion correcta")
-    public void submitHealthyImage_Success() throws Exception {
+    @DisplayName("Upload a healthy image and get the correct response")
+    public void predictImage_ThatIsHealthy_ReturnsCorrectResponse() throws Exception {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("paciente", paciente);
@@ -135,7 +135,7 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
                 .exchange()
                 .expectStatus().is2xxSuccessful();
 
-        FluxExchangeResult<String> result = webTestClient.get().uri("/imagen/predict/1")
+        FluxExchangeResult<String> result = webTestClient.get().uri("/imagen/predict/{id}", imagen.getId())
                 .exchange()
                 .expectStatus().isOk()
                 .returnResult(String.class);
@@ -148,15 +148,15 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("Subir imagen no sana y obtener clasificación correcta")
-    public void submitNotHealthyImage_Success() throws Exception {
+    @DisplayName("Upload a not healthy image and get the correct response")
+    public void predictImage_ThatIsNotHealthy_ReturnsCorrectResponse() throws Exception {
 
         // Guardo el archivo de la imagen
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("paciente", paciente);
         builder.part("image", new FileSystemResource(notHealthyImage));
 
-        // Upload image and data
+        // Subimos la imagen
         webTestClient.post()
                 .uri("/imagen")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
@@ -164,7 +164,8 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
                 .exchange()
                 .expectStatus().is2xxSuccessful();
 
-        FluxExchangeResult<String> result = webTestClient.get().uri("/imagen/predict/1")
+        // Comprobamos que la clasificación es correcta
+        FluxExchangeResult<String> result = webTestClient.get().uri("/imagen/predict/{id}", imagen.getId())
                 .exchange()
                 .expectStatus().isOk()
                 .returnResult(String.class);
