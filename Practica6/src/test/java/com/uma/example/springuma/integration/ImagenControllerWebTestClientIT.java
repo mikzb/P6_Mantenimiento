@@ -222,4 +222,26 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
                 .expectHeader().valueEquals("Content-Type", "image/png");
     }
 
+    @Test
+    @DisplayName("given a valid image id, delete removes the image")
+    public void deleteImage_ValidId_RemovesImage() throws Exception {
+        // Crear y guardar una imagen
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("paciente", paciente);
+        builder.part("image", new FileSystemResource(healthyImage));
+
+        // Subir la imagen a la base de datos
+        webTestClient.post()
+                .uri("/imagen")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+
+        // Eliminar la imagen
+        webTestClient.delete().uri("/imagen/1")
+                .exchange()
+                .expectStatus().isNoContent();
+    }
+
 }
