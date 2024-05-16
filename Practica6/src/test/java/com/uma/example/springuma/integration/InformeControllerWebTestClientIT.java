@@ -134,4 +134,28 @@ public class InformeControllerWebTestClientIT extends AbstractIntegration {
         assertNull(informeObtenido);
 
     }
+
+    @Test
+    @DisplayName("Given valid image id, get informes by image id")
+    public void getInformesByImageId_WithValidData_ReturnsSuccess() throws Exception {
+
+        // Creación del informe
+        webTestClient.post().uri("/informe")
+                .body(Mono.just(informe), Informe.class)
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody().returnResult();
+
+        //Obtención de los informes
+        FluxExchangeResult<Informe> result = webTestClient.get().uri("/informe/imagen/{id}", informe.getImagen().getId())
+                .exchange()
+                .expectStatus().isOk()
+                .returnResult(Informe.class);
+
+        Informe informeObtenido = result.getResponseBody().blockFirst();
+
+        assertEquals(informe.getId(), informeObtenido.getId());
+        assertEquals(informe.getContenido(), informeObtenido.getContenido());
+
+    }
 }
