@@ -43,8 +43,6 @@ public class ImagenRepositoryIT {
         imagen.setFecha(Fecha);
         imagen.setFile_content(fileContent);
 
-        imagen.setFecha(Fecha);
-
         // act
         imagenRepository.save(imagen);
 
