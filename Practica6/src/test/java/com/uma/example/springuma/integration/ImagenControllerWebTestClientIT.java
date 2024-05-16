@@ -1,13 +1,18 @@
-package com.uma.example.springuma.integration.base;
+package com.uma.example.springuma.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.time.Duration;
 import java.util.Calendar;
+import java.util.stream.Stream;
 
+import com.uma.example.springuma.integration.base.AbstractIntegration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.FileSystemResource;
@@ -37,8 +42,8 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
     private Medico medico;
     private Paciente paciente;
 
-    private File healthyImage= new File("src/test/resources/healthy.png");
-    private File notHealthyImage= new File("src/test/resources/no_healthty.png");
+    private static File healthyImage= new File("src/test/resources/healthy.png");
+    private static File notHealthyImage= new File("src/test/resources/no_healthty.png");
 
     @PostConstruct
     public void init() throws Exception {
@@ -74,9 +79,17 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
                 .expectBody().returnResult();
     }
 
-    @Test
+    public static Stream<Arguments> provideImagesForTesting() {
+        return Stream.of(
+                Arguments.of(healthyImage),
+                Arguments.of(notHealthyImage)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideImagesForTesting")
     @DisplayName("Subir y obtener la misma imagen")
-    public void submitValidImage_Success() throws Exception {
+    public void submitValidImage_Success(File imageFile) throws Exception {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("paciente", paciente);
