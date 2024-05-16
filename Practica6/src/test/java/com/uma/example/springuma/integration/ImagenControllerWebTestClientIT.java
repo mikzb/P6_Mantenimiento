@@ -1,3 +1,5 @@
+//Cristian Ruiz Martín y Mikolaj Zabski
+
 package com.uma.example.springuma.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -79,7 +81,7 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
                 .expectBody().returnResult();
     }
 
-    public static Stream<Arguments> provideImagesForTesting() {
+    private static Stream<Arguments> provideImagesForTesting() {
         return Stream.of(
                 Arguments.of(healthyImage),
                 Arguments.of(notHealthyImage)
@@ -88,7 +90,7 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
 
     @ParameterizedTest
     @MethodSource("provideImagesForTesting")
-    @DisplayName("Upload an image and get the correct response")
+    @DisplayName("Upload an image and check if it was uploaded correctly")
     public void uploadImage_WithValidData_ReturnsSuccess(File imageFile) throws Exception {
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();

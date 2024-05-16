@@ -1,3 +1,5 @@
+//Cristian Ruiz Martín y Mikolaj Zabski
+
 package com.uma.example.springuma.integration;
 
 import com.uma.example.springuma.model.Imagen;

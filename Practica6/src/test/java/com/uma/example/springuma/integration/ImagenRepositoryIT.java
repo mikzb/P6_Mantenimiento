@@ -1,3 +1,5 @@
+//Cristian Ruiz Martín y Mikolaj Zabski
+
 package com.uma.example.springuma.integration;
 
 import com.uma.example.springuma.model.Imagen;
@@ -9,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import javax.swing.text.html.Option;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Optional;

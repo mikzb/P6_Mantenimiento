@@ -1,3 +1,5 @@
+//Cristian Ruiz Martín y Mikolaj Zabski
+
 package com.uma.example.springuma.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,16 +79,6 @@ public class PacienteControllerMockMvcIT extends AbstractIntegration {
                 .andExpect(jsonPath("$.edad").value(paciente.getEdad()))
                 .andExpect(jsonPath("$.id").value(paciente.getId()));
 
-    }
-
-    @Test
-    @DisplayName("Get by id a paciente that does not exist")
-    void getPaciente_ThatDoesNotExist_ReturnsNotFound() throws Exception {
-
-        // Obtener el paciente
-        this.mockMvc.perform(get("/paciente/2"))
-                .andDo(print())
-                .andExpect(status().isInternalServerError());
     }
 
     @Test

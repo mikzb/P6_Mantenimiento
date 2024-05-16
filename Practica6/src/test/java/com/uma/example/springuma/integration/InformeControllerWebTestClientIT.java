@@ -1,3 +1,5 @@
+//Cristian Ruiz Martín y Mikolaj Zabski
+
 package com.uma.example.springuma.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +36,6 @@ public class InformeControllerWebTestClientIT extends AbstractIntegration {
 
     private WebTestClient webTestClient;
 
-    private Imagen imagen;
     private Informe informe;
 
     @PostConstruct
@@ -52,7 +53,7 @@ public class InformeControllerWebTestClientIT extends AbstractIntegration {
                 .expectStatus().isCreated()
                 .expectBody().returnResult();
 
-        imagen = new Imagen();
+        Imagen imagen = new Imagen();
         imagen.setNombre("Imagen 1");
         imagen.setFecha(Calendar.getInstance());
         imagen.setId(1);
