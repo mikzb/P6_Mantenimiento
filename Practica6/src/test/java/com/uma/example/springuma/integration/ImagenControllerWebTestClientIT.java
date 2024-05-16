@@ -179,7 +179,7 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
 
     @Test
     @DisplayName("getImagenes, given a valid paciente and a valid id returns a list of images")
-    public void getImagenes_ValidPacienteAndId_ReturnsListOfImages() throws Exception {
+    public void getImagenes_WithValidPacienteAndId_ReturnsListOfImages() throws Exception {
         // Crear y guardar una imagen
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         builder.part("paciente", paciente);
@@ -201,8 +201,8 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("given a valid valid image id, download gets same data")
-    public void downloadImage_ValidId_ReturnsSameData() throws Exception {
+    @DisplayName("Given a valid image id, download gets same data")
+    public void downloadImage_WithValidId_ReturnsSameData() throws Exception {
         // Crear y guardar una imagen
 
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
@@ -226,7 +226,7 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("given a valid image id, delete removes the image")
+    @DisplayName("Given a valid image id, delete removes the image")
     public void deleteImage_ValidId_RemovesImage() throws Exception {
         // Crear y guardar una imagen
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
