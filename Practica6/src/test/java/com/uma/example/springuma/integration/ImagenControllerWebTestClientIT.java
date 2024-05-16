@@ -174,4 +174,52 @@ public class ImagenControllerWebTestClientIT extends AbstractIntegration {
         assertEquals("Cancer (label 1)", respuesta.substring(16, 32));
     }
 
+    @Test
+    @DisplayName("getImagenes, given a valid paciente and a valid id returns a list of images")
+    public void getImagenes_ValidPacienteAndId_ReturnsListOfImages() throws Exception {
+        // Crear y guardar una imagen
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("paciente", paciente);
+        builder.part("image", new FileSystemResource(healthyImage));
+
+        // Subir la imagen a la base de datos
+        webTestClient.post()
+                .uri("/imagen")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+
+        // Obtener la lista de imagenes del paciente
+        webTestClient.get().uri("/imagen/paciente/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody().jsonPath("$[0].nombre").isEqualTo("healthy.png");
+    }
+
+    @Test
+    @DisplayName("given a valid valid image id, download gets same data")
+    public void downloadImage_ValidId_ReturnsSameData() throws Exception {
+        // Crear y guardar una imagen
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("paciente", paciente);
+        builder.part("image", new FileSystemResource(healthyImage));
+        builder.part("id","1");
+
+        // Subir la imagen a la base de datos
+        webTestClient.post()
+                .uri("/imagen")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData(builder.build()))
+                .exchange()
+                .expectStatus().is2xxSuccessful();
+
+        // Descargar la imagen
+        webTestClient.get().uri("/imagen/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().valueEquals("Content-Type", "image/png");
+    }
+
 }
